@@ -1,8 +1,13 @@
-// import React, {useState} from 'react'
+import React, {useState} from 'react'
+import Main from './Main.js'
 import Header from './Header.js'
 import Footer from './Footer.js'
 
 function App() {
+	let width = 20;
+	let height = 20;
+	const table=document.getElementById("table")	
+
 	return(
 		<>
 			<head>
@@ -12,7 +17,7 @@ function App() {
 
 			</head>
 			<Header />
-			<Footer />
+			<Main height={height} width={width}/>
 		</>
 	)
 }

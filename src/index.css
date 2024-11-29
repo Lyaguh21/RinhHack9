@@ -1,8 +1,7 @@
 :root{
 --color-primary: #0c3388; 
---color-accent-primary: hsl(45, 80%, 60%);
---color-accent-secondary: hsl(40, 90%, 30%);
---color-selected: hsl(50, 55%, 70%);
+--table-width: 20;
+--table-height: 20;
 }
 body{
 margin: 0px;
@@ -55,4 +54,26 @@ justify-content: start;
 	align-text: center;
 	align-items: center;
 	vertical-align: middle;
+}
+#table{
+	width: 100vw;
+	height: 90vh;
+	overflow: scroll;
+	bottom:0;
+	position: absolute;
+	background-color: white;
+	display: grid;
+	grid-template-rows: repeat(var(--table-height), 1fr);
+	grid-template-columns: repeat(var(--table-width), 6vw);
+
+
+}
+.cell{
+	height: 6vh;
+	border: 1px solid black;
+	line-height: 6vh;
+	vertical-align: middle;
+	text-align: center;
+	font-size: 2em;
+	overflow: visible;
 }
