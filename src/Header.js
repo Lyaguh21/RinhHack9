@@ -10,6 +10,8 @@ function Header() {
 				<div className="button">Справка</div>
 			</div>
 		<div className="toolPanel"></div>
+		<div className="bottom-panel"></div>
+		
 		</header>
 	);
 }
