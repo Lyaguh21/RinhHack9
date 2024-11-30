@@ -1,31 +1,37 @@
 :root{
---color-primary: #0c3388; 
---table-width: 20;
---table-height: 20;
+--color-primary: #253352; 
+--color-secondary: #D8D8D8;
+--color-accent: #8D8D8D;
+--table-width: 50;
+--table-height: 50;
 }
 body{
 margin: 0px;
 font-family: "Open Sans", sans-serif;
-background: var(--color-primary);
+background: var(--color-secondary);
 
 }
 header{
 background-color:var(--color-primary);
-height: 10vh;
+height: 6vh;
 width: 100vw;
 position: absolute;
 top: 0;
 color: white;
-font-size: 1.3em;
+font-size: 1.5em;
 font-weight: 600;
 }
+#vid{
+width:4vw;
+transform: translateX(-1vw);
+}
 .button{
-height: 10vh;
-width: 5vw;
-vertical-align: middle;
+height: 6vh;
+width: 7vw;
+vertical-align: top;
 text-align: center;
 align-items: center;
-line-height: 10vh;
+line-height: 4vh;
 }
 .flex-box{
 display: flex;
@@ -34,6 +40,15 @@ width:30vw;
 left:5vw;
 position:absolute;
 justify-content: start; 
+}
+.toolPanel{
+	position: absolute;
+	width: 98vw;
+	height: 6vh; 
+	top:7vh;
+	left: 1vw;
+	border-radius: 25px / 50%;
+	background-color: white;
 }
 .footer{
 	background-color: var(--color-primary);
@@ -57,23 +72,23 @@ justify-content: start;
 }
 #table{
 	width: 100vw;
-	height: 90vh;
+	height: 80vh;
 	overflow: scroll;
 	bottom:0;
 	position: absolute;
-	background-color: white;
+	background-color: var(--color-secondary);
 	display: grid;
-	grid-template-rows: repeat(var(--table-height), 1fr);
-	grid-template-columns: repeat(var(--table-width), 6vw);
+	grid-template-rows: repeat(var(--table-height), 3vh);
+	grid-template-columns: repeat(var(--table-width), 5vw);
 
 
 }
 .cell{
-	height: 6vh;
-	border: 1px solid black;
+	height: 3vh;
+	border: 1px solid var(--color-accent);
 	line-height: 6vh;
 	vertical-align: middle;
 	text-align: center;
 	font-size: 2em;
-	overflow: visible;
+	background-color: var(--color-secondary);
 }

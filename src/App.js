@@ -4,8 +4,8 @@ import Header from './Header.js'
 import Footer from './Footer.js'
 
 function App() {
-	let width = 20;
-	let height = 20;
+	let width = 50;
+	let height = 50;
 	const table=document.getElementById("table")	
 
 	return(
