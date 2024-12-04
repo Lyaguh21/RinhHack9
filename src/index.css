@@ -2,7 +2,7 @@
 --color-primary: #253352; 
 --color-secondary: #D8D8D8;
 --color-accent: #8D8D8D;
---table-width: 50;
+--table-width: 51;
 --table-height: 50;
 }
 body{
@@ -13,7 +13,7 @@ background: var(--color-secondary);
 }
 header{
 background-color:var(--color-primary);
-height: 6vh;
+height: 5vh;
 width: 100vw;
 position: absolute;
 top: 0;
@@ -26,29 +26,60 @@ width:4vw;
 transform: translateX(-1vw);
 }
 .button{
-height: 6vh;
+height: 5vh;
 width: 7vw;
-vertical-align: top;
+vertical-align: middle;
 text-align: center;
 align-items: center;
-line-height: 4vh;
+line-height: 5vh;
 }
 .flex-box{
 display: flex;
 top: 0px;
 width:30vw;
-left:5vw;
+left:1vw;
 position:absolute;
 justify-content: start; 
 }
 .toolPanel{
 	position: absolute;
-	width: 98vw;
-	height: 6vh; 
-	top:7vh;
-	left: 1vw;
-	border-radius: 25px / 50%;
+	display: grid;
+	grid-template-columns: repeat(50, 1fr);
+	grid-template-rows: 1.5vh;
+	width: 99vw;
+	height: 4vh; 
+	top:6vh;
+	left: 0.5vw;
+	border-radius: 15px / 50%;
 	background-color: white;
+	vertical-align: middle;
+
+}
+.bottom-panel{
+	display: grid;
+	grid-template-rows: 1fr;
+	grid-template-columns: repeat(16, 1fr);
+	width: 99vw;
+	height: 4vh;
+	position: absolute;
+	top:12vh;
+	left: 0.5vw;
+}
+#cell-name, #cell-value{
+	background-color: white;
+	border-radius: 10px / 15%;
+	font-size: 1.1em;
+}
+#cell-value::placeholder{
+	margin-left: 1vw;
+	position: relative;
+}
+#cell-value{
+	grid-column: 3/17;
+}
+#cell-name{
+	grid-column: 1/2;
+	text-align: center;
 }
 .footer{
 	background-color: var(--color-primary);
@@ -78,17 +109,118 @@ justify-content: start;
 	position: absolute;
 	background-color: var(--color-secondary);
 	display: grid;
-	grid-template-rows: repeat(var(--table-height), 3vh);
+	grid-template-rows: 6vh repeat(var(--table-height), 3vh);
+	grid-template-columns: repeat(var(--table-width), 6vw);
+}
+#table-head{
+	display: grid;
+	grid-template-rows: 1fr;
 	grid-template-columns: repeat(var(--table-width), 5vw);
-
-
+	background-color: var(--color-secondary);
+	height: 4vh;
+	width: 100vw;
+	overflow: scroll;
+	position: absolute;
+	top: 17vh;
+}
+.column-head{
+	border: 1px solid var(--color-accent);
+	height: 6vh;
+	border-top: 0px;
+	text-align: center;
+	font-size: 2em;
+	font-weight: 500;
+}
+.number-cell{
+	border: 1px solid var(--color-accent);
+	height: 3vh;
+	text-align: end;
+	font-weight: 700;
 }
 .cell{
 	height: 3vh;
 	border: 1px solid var(--color-accent);
-	line-height: 6vh;
-	vertical-align: middle;
+	line-height: 3vh;
+	vertical-align: top;
 	text-align: center;
-	font-size: 2em;
+	font-size: 1.5em;
 	background-color: var(--color-secondary);
+	cursor: pointer; 
 }
+.toolPanel div{
+	height: 100%;
+}
+#redo{
+	grid-column: 1;
+}
+#undo{
+	grid-column: 2;
+}
+#paste{
+	grid-column: 3;
+}
+#font-bar{
+	grid-column: 4/8;
+	width: 8.5vw;
+	height: 2.5vh;
+	border: 1px solid var(--color-accent);
+	transform: translate(5%, 20%);
+}
+#font-styles{
+	grid-column: 9/12;
+}
+#func{
+	grid-column: 12;
+}
+#font-styles{
+	display: flex;
+	justify-content: space-around;
+	flex-direction: row;
+	transform: translate(-10%, 20%);
+}
+#redo img{
+	transform: translate(40%, 40%);
+	position:absolute;
+	height: 2vh;
+}
+#undo img{
+	position: absolute;
+	transform: translate(0, 40%) rotateY(180deg);
+	height: 2vh;
+}
+#paste img{
+	position: absolute;
+	transform: translate(0, 45%);
+	height: 2vh;
+}
+#logo{
+	position: absolute;
+	height: 2.7vh;
+	top: 1vh;
+	left: 1vh;
+}
+#font-styles img{
+	height: 2vh;
+}
+#func img{
+	height: 2vh;
+	transform: translate(0, 15%);
+}
+#name{
+	position: absolute;
+	left:50%;
+	transform: translateX(-50%);
+	font-size: 1.2em;
+}
+#redo::after{
+	content: "";
+	position: absolute;
+	width: 2px;
+	height: 2.2vh;
+	left:3.4vh;
+	top:0.8vh;
+	background-color: black;
+	}
+
+
+

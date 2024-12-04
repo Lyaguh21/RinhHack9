@@ -1,5 +1,4 @@
-import React, {useState} from 'react'
-function Main(props){
+function Main(props) {
 	
 	
 	// алфавит  для букавок
@@ -43,12 +42,7 @@ function Main(props){
 		tableIndex = al[parseInt(normIndex[0]) - 1] + normIndex[1];
 		return(tableIndex);
 	}
-
-	//пока не уверен в нужности этого 
-	let tableList = [];  
-	for(let i=0; i<props.width; i++){
-		tableList[i]= [];
-	}
+	
 
 
 	//масивчик с ячейками
@@ -57,36 +51,58 @@ function Main(props){
 
 	// пока не работает
 	
-	function setCell(e){
-		tableList[indexConvert(e.target.id)[0]][indexConvert(e.target.id)[1]] = e.target.value;		
-		console.log(tableList);
-	}
+	var cell = `<input type='text' class='cell'></input>`;
+	cell = cell.repeat(props.width * props.width);
+	
+
+	//заголовки столбцов
+	
+	let ColumnHead = "<div class='column-head'></div>";
+	let HeadRow = ColumnHead.repeat(props.width +1); 
 
 
-	//шаблон ячейки
-	var cell = "<input type='text' class='cell'></input>";
-	cell = cell.repeat(props.height * props.width);
+	let NumberCell = "<div class='number-cell'></div>";
 
 
 	// поиск ячеек
-	
 	window.onload = function(){
-		tableElements = document.querySelectorAll('input');
+		let alo = document.getElementById("table");
+		alo.insertAdjacentHTML('afterbegin', HeadRow);
+		let Head = document.querySelectorAll('.column-head')
+
+		for(let i = 0; i<props.width; i++){
+			if(i >= al.length){
+				Head.item(i+1).innerHTML = al[(~~(i / al.length))] + al[i%al.length];
+			}else{ Head.item(i+1).innerHTML = al[i];	
+			}
+
+		}
+
+		tableElements = document.querySelectorAll('.cell');
+		for(let i = 0; i<props.height; i++){
+			tableElements.item(i*props.width).insertAdjacentHTML('beforebegin', NumberCell);
+		}
+		let numbers = document.querySelectorAll('.number-cell');
+		for(let i = 0; i< props.height; i++){
+			numbers.item(i).innerHTML=i+1;
+		}		
+		tableElements.forEach((cell) => {cell.addEventListener("click", (e) => props.onClick(e))});
+		tableElements.forEach((cell) => {cell.addEventListener("input", (e) => props.onChangeCell(e))});
 		for(let i = 0; i< props.width; i++){
-			tableList[i] = [];
 			for(let j = 0; j < props.height; j++){
-				tableElements.item(i*props.width + j).id=indexTabler([i+1,j+1]);
-				tableElements.item(i*props.width + j).onChange=(event)=>{setCell(event)};
-				tableList[i][j] = tableElements.item(i*props.width + j).id; 
+				tableElements.item(i*props.width + j).id=indexTabler([j+1,i+1]);
 			}
 		}
-	};
 
+	}	
+	
+	 	 
 
 	//html фрагментик
 	return(
-		<div id="table"	dangerouslySetInnerHTML={{__html: cell}}> 	
-		</div>
+		<>
+			<div id="table"	dangerouslySetInnerHTML={{__html: cell}}></div>
+		</>
 	)
 }
 export default Main;
