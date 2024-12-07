@@ -1,4 +1,4 @@
-// import React, {useState} from 'react'
+import React, {useState, useRef} from 'react'
 import Main from './Main.js'
 import Header from './Header.js'
 // import Footer from './Footer.js'
@@ -6,29 +6,49 @@ import Header from './Header.js'
 function App() {
 	let width = 50;
 	let height = 50;
+	
 
 
+	const mouseDownRef = useRef(false);
+	const focusRef = useRef(['','']);
 
-	// выделение ячейки
-
-	function setFocus(e) {
-                const focus = document.getElementById('cell-name');              
-		const cellmonitor = document.getElementById('cell-value');
-		cellmonitor.value = e.target.value;
-                focus.value = e.target.id;
-        }
-
+	const setStartOfScope = (e) => {
+		if(e.button == 2){
+		const ident = document.getElementById("cell-name");
+		let nextFocus = [...focusRef.current];
+		nextFocus[0] = e.target.id;
+		focusRef.current = [...nextFocus];
+		ident.value = focusRef.current[0];
+		mouseDownRef.current = true;
+		}
+	}
+	const  setEndOfScope = (e) => {
+		if(mouseDownRef.current == true){
+			const ident = document.getElementById("cell-name");
+			let nextFocus = [...focusRef.current];
+				console.log('1:' + nextFocus);
+				console.log(e);
+			nextFocus[1] = e.target.id;
+			focusRef.current = [...nextFocus];
+			ident.value = focusRef.current[0] + ":" + focusRef.current[1];
+		console.log(focusRef.current);
+		}
+	}
+	const setFinalEndOfScope = () => {
+		let table = document.querySelectorAll(".cell");
+		console.log(focusRef.current);
+		mouseDownRef.current = false;
+	}
 
 
 
 	// обновление ячейки
 
-	function cellChange(e){
+	const cellChange = (e) => {
 		const cellmonitor = document.getElementById('cell-value');
 		cellmonitor.value= e.target.value;
-		console.log(e);
 	}
-	function monitorChange(e){
+	const monitorChange = (e) => {
 		const cellId = document.getElementById('cell-name').value;
 		const cell = document.getElementById(cellId);
 		cell.value = e.target.value;
@@ -36,7 +56,7 @@ function App() {
 
 	// жирни шрифт
 
-	function setBold() {
+	const setBold = () => {
 		const focus = document.getElementById('cell-name');
 		const cell = document.getElementById(focus.value);
 		if(cell.style.fontWeight==='bold'){
@@ -52,7 +72,7 @@ function App() {
 
 	// кривой шрифт
 
-	function setItalic() {
+	const setItalic = () => {
 		const focus = document.getElementById('cell-name');
 		const cell = document.getElementById(focus.value);
 		if(cell.style.fontStyle==='italic'){
@@ -68,7 +88,7 @@ function App() {
 
 	//шрифт на полу
 
-	function setUnderlined() {
+	const setUnderlined = () => {
 		const focus = document.getElementById('cell-name');
 		const cell = document.getElementById(focus.value);
 		if(cell.style.textDecoration==='underline'){
@@ -93,7 +113,7 @@ function App() {
 
 			</head>
 			<Header setBold={setBold} setItalic={setItalic} setUnderlined={setUnderlined} monitorChange={monitorChange}/>
-			<Main height={height} width={width} onClick={setFocus} onChangeCell={cellChange}/>
+			<Main finalScope={setFinalEndOfScope} setEnd={setEndOfScope} setStart={setStartOfScope} height={height} width={width} onChangeCell={cellChange}/>
 		</>
 	)
 }

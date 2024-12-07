@@ -138,6 +138,11 @@ justify-content: start;
 	font-weight: 700;
 }
 .cell{
+	user-select: none;
+	-moz-user-select: none;
+	-o-user-select: none;
+	-khtml-user-select: none;
+	-webkit-user-select: none;
 	height: 3vh;
 	border: 1px solid var(--color-accent);
 	line-height: 3vh;

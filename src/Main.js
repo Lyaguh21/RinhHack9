@@ -51,7 +51,7 @@ function Main(props) {
 
 	// пока не работает
 	
-	var cell = `<input type='text' class='cell'></input>`;
+	var cell = `<input type='text' class='cell'>`;
 	cell = cell.repeat(props.width * props.width);
 	
 
@@ -66,6 +66,7 @@ function Main(props) {
 
 	// поиск ячеек
 	window.onload = function(){
+		document.addEventListener('contextmenu', e => e.preventDefault())
 		let alo = document.getElementById("table");
 		alo.insertAdjacentHTML('afterbegin', HeadRow);
 		let Head = document.querySelectorAll('.column-head')
@@ -86,8 +87,10 @@ function Main(props) {
 		for(let i = 0; i< props.height; i++){
 			numbers.item(i).innerHTML=i+1;
 		}		
-		tableElements.forEach((cell) => {cell.addEventListener("click", (e) => props.onClick(e))});
+		tableElements.forEach((cell) => {cell.addEventListener("mousedown", (e) => props.setStart(e))});
+		tableElements.forEach((cell) => {cell.addEventListener("mouseup", (e) => props.finalScope(e))});
 		tableElements.forEach((cell) => {cell.addEventListener("input", (e) => props.onChangeCell(e))});
+		tableElements.forEach((cell) => {cell.addEventListener("mouseover", (e) => props.setEnd(e))});
 		for(let i = 0; i< props.width; i++){
 			for(let j = 0; j < props.height; j++){
 				tableElements.item(i*props.width + j).id=indexTabler([j+1,i+1]);
