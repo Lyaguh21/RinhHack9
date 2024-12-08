@@ -7,6 +7,9 @@ function App() {
 	const al = ['А', 'Б', 'В', 'Г', 'Д', 'Е', 'Ж', 'З', 'И', 'К', 'Л', 'М', 'Н', 'О', 'П', 'Р', 'С', 'Т', 'У', 'Ф', 'Х', 'Ц', 'Ч', 'Ш', 'Щ', 'Ы', 'Э', 'Ю', 'Я'];
 	let width = 50;
 	let height = 50;
+	console.log(indexConvert('АА10'));
+	console.log(indexConvert('АР10'));
+
 
 	function rangeToArray(focus){
 		if(focusRef.current[1] === ''){
@@ -15,10 +18,10 @@ function App() {
 		let start = indexConvert(focus[0]);
 		let end = indexConvert(focus[1]);
 		let array = [];	
-		let rowStart = Number(Math.min(start[1], end[1]));
-		let rowEnd = Number(Math.max(start[1], end[1]));
-		let columnStart = Number(Math.min(start[0], end[0]));
-		let columnEnd = Number(Math.max(start[0], end[0]));
+		let rowStart = Math.min(Number(start[1]), Number(end[1]));
+		let rowEnd = Math.max(Number(start[1]), Number(end[1]));
+		let columnStart = Math.min(Number(start[0]), Number(end[0]));
+		let columnEnd = Math.max(Number(start[0]), Number(end[0]));
 		for(let r = rowStart; r<=rowEnd; r++){
 			for(let c = columnStart; c<=columnEnd; c++){
 				array.push(tableRef.current[r-1][c-1]);
@@ -34,7 +37,7 @@ function App() {
                                 normIndex[1] = (parseInt(tableIndex.slice(3))).toString();
                                 return(normIndex);
                         }
-                        normIndex[0] = ((parseInt(al.indexOf(tableIndex[0])) +1) * al.length + (parseInt(al.indexOf(tableIndex[1] + 1)))).toString();
+                        normIndex[0] = ((al.indexOf(tableIndex[0]) +1) * al.length + (al.indexOf(tableIndex[1]) + 1)).toString();
                         normIndex[1] = (parseInt(tableIndex.slice(2))).toString();
 
                         return(normIndex);

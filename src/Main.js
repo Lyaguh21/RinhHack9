@@ -36,7 +36,7 @@ function Main(props) {
 			return(tableIndex);
 		}
 		if(normIndex[0] > al.length){
-			tableIndex = (~~(al[parseInt(normIndex[0]) / al.length - 1])).toString() + (al[parseInt(normIndex[0]) % al.length - 1]).toString() + normIndex[1];
+			tableIndex = al[(~~(parseInt(normIndex[0]) / al.length)) - 1] + (al[parseInt(normIndex[0]) % al.length - 1]).toString() + normIndex[1];
 			return(tableIndex);
 		}
 		tableIndex = al[parseInt(normIndex[0]) - 1] + normIndex[1];
