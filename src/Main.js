@@ -73,7 +73,7 @@ function Main(props) {
 
 		for(let i = 0; i<props.width; i++){
 			if(i >= al.length){
-				Head.item(i+1).innerHTML = al[(~~(i / al.length))] + al[i%al.length];
+				Head.item(i+1).innerHTML = al[(~~(i / al.length))-1] + al[i%al.length];
 			}else{ Head.item(i+1).innerHTML = al[i];	
 			}
 
@@ -91,6 +91,12 @@ function Main(props) {
 		tableElements.forEach((cell) => {cell.addEventListener("mouseup", (e) => props.finalScope(e))});
 		tableElements.forEach((cell) => {cell.addEventListener("input", (e) => props.onChangeCell(e))});
 		tableElements.forEach((cell) => {cell.addEventListener("mouseover", (e) => props.setEnd(e))});
+		for(let i = 0; i<props.height;i++){
+                        props.tableRef.current[i] = [];
+                        for(let j = 0; j<props.width;j++){
+                                props.tableRef.current[i][j] = tableElements.item(i*props.width + j);
+                        }
+                }
 		for(let i = 0; i< props.width; i++){
 			for(let j = 0; j < props.height; j++){
 				tableElements.item(i*props.width + j).id=indexTabler([j+1,i+1]);

@@ -2,6 +2,7 @@
 --color-primary: #253352; 
 --color-secondary: #D8D8D8;
 --color-accent: #8D8D8D;
+--color-selected: #8cc9fd;
 --table-width: 51;
 --table-height: 50;
 }
@@ -97,7 +98,6 @@ justify-content: start;
 	width: 12vw;
 	height: 10vh;
 	line-height: 10vh;
-	align-text: center;
 	align-items: center;
 	vertical-align: middle;
 }
@@ -138,6 +138,7 @@ justify-content: start;
 	font-weight: 700;
 }
 .cell{
+	position: relative;
 	user-select: none;
 	-moz-user-select: none;
 	-o-user-select: none;
@@ -151,6 +152,10 @@ justify-content: start;
 	font-size: 1.5em;
 	background-color: var(--color-secondary);
 	cursor: pointer; 
+	transition: 1s;
+}
+.selected{
+	background-color: var(--color-selected); 
 }
 .toolPanel div{
 	height: 100%;
