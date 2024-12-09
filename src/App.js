@@ -10,6 +10,25 @@ function App() {
 	console.log(indexConvert('АА10'));
 	console.log(indexConvert('АР10'));
 
+	function numToLet(num){
+                let letter ='';
+                if( num>al.length*al.length){
+                        let firstIndex = (~~(num / (al.length * al.length)));
+                        num -= firstIndex * al.length * al.length;
+                        let secondIndex = (~~(num / al.length));
+                        num -= secondIndex * al.length;
+                        let thirdIndex = num;
+                        letter = al[firstIndex - 1] + al[secondIndex - 1] + al[thirdIndex - 1];
+                } else if(num> al.length){
+                        let firstIndex = (~~(num / al.length)); 
+                        num -= firstIndex * al.length;
+                        let secondIndex = num;
+                        letter = al[firstIndex - 1] + al[secondIndex - 1];
+                } else {
+                        letter = al[num - 1]
+                }
+                return(letter);
+        }
 
 	function rangeToArray(focus){
 		if(focusRef.current[1] === ''){
@@ -52,31 +71,52 @@ function App() {
 	const focusRef = useRef(['','']);
 	const tableRef = useRef([]);
 
+
+	const resetSelection = () => {
+		rangeToArray(focusRef.current).forEach((target) => {target.className = 'cell'});
+	}
+	const setSelection = () => {
+		rangeToArray(focusRef.current).forEach((target) => {target.className = 'cell selected'});
+	}
 	const setStartOfScope = (e) => {
-		let targets = rangeToArray(focusRef.current);
-		targets.forEach((target) => {target.className = 'cell';});
-		const ident = document.getElementById("cell-name");
-		let nextFocus = [...focusRef.current];
-		nextFocus = [e.target.id, ''];
-		focusRef.current = [...nextFocus];
-		ident.value = focusRef.current[0];
-		targets = rangeToArray(focusRef.current);
-		targets.forEach((target) => {target.className = 'cell selected';});
-		if(e.button === 2){
-		mouseDownRef.current = true;
+		if(e.target.className === 'cell' || e.target.className === 'cell selected'){
+			resetSelection();
+			const ident = document.getElementById("cell-name");
+			focusRef.current = [e.target.id, ''];
+			ident.value = focusRef.current[0];
+			setSelection();
+			if(e.button === 2){
+			mouseDownRef.current = true;
+			}
+		} else {
+			resetSelection();
+			const ident = document.getElementById("cell-name");
+			if (e.target.className === 'number-cell'){
+				focusRef.current = ['А' + `${e.target.innerHTML}`, `${numToLet(width) + e.target.innerHTML}`];
+			} else {
+			focusRef.current = [`${e.target.id + '1'}`, `${e.target.id + height}`];
+			}
+			ident.value = focusRef.current[0] + ':' + focusRef.current[1];
+			setSelection();
+			if(e.button === 2){
+				mouseDownRef.current = true;
+			
+			}
 		}
 	}
 	const  setEndOfScope = (e) => {
 		if(mouseDownRef.current === true){
-			let targets = rangeToArray(focusRef.current);
-			targets.forEach((target) => {target.className = 'cell';});
+			resetSelection();
 			const ident = document.getElementById("cell-name");
-			let nextFocus = [...focusRef.current];
-			nextFocus[1] = e.target.id;
-			focusRef.current = [...nextFocus];
-			ident.value = focusRef.current[0] + ":" + focusRef.current[1];
-			targets = rangeToArray(focusRef.current);
-			targets.forEach((target) => {target.className = 'cell selected';});
+			if(e.target.className === 'cell' || e.target.className === 'cell selected'){
+				focusRef.current = [focusRef.current[0], e.target.id];
+			} else if ( e.target.className === 'number-cell'){
+				focusRef.current = [focusRef.current[0], `${numToLet(width) + e.target.innerHTML}`];
+			} else {
+				focusRef.current = [focusRef.current[0], `${e.target.id + height}`];
+			}
+			ident.value = focusRef.current[0] + ':' + focusRef.current[1];
+			setSelection();
 		}
 	}
 	const setFinalEndOfScope = () => {

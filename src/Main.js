@@ -7,7 +7,6 @@ function Main(props) {
 
 
 	// из индекса таблицы(типо "Б8") делает масивчик с индексами этой ячейки в массиве tableElements(типо "[2, 8]")
-	
 	function indexConvert(tableIndex){
 		let normIndex = ['0', '0'];	
 		if(al.includes(tableIndex[1])){
@@ -74,7 +73,10 @@ function Main(props) {
 		for(let i = 0; i<props.width; i++){
 			if(i >= al.length){
 				Head.item(i+1).innerHTML = al[(~~(i / al.length))-1] + al[i%al.length];
-			}else{ Head.item(i+1).innerHTML = al[i];	
+				Head.item(i+1).id = al[(~~(i / al.length))-1] + al[i%al.length];
+			}else{ 
+				Head.item(i+1).innerHTML = al[i];	
+				Head.item(i+1).id = al[i];	
 			}
 
 		}
@@ -87,10 +89,24 @@ function Main(props) {
 		for(let i = 0; i< props.height; i++){
 			numbers.item(i).innerHTML=i+1;
 		}		
-		tableElements.forEach((cell) => {cell.addEventListener("mousedown", (e) => props.setStart(e))});
-		tableElements.forEach((cell) => {cell.addEventListener("mouseup", (e) => props.finalScope(e))});
-		tableElements.forEach((cell) => {cell.addEventListener("input", (e) => props.onChangeCell(e))});
-		tableElements.forEach((cell) => {cell.addEventListener("mouseover", (e) => props.setEnd(e))});
+		Head.forEach((target) => {
+			if(target.innerHTML){
+				target.addEventListener("mousedown", (e) => props.setStart(e));
+				target.addEventListener("mouseover", (e) => props.setEnd(e));
+				target.addEventListener("mouseup", (e) => props.finalScope(e))
+			}
+		});
+		numbers.forEach((target) => {
+				target.addEventListener("mousedown", (e) => props.setStart(e));
+				target.addEventListener("mouseover", (e) => props.setEnd(e));
+				target.addEventListener("mouseup", (e) => props.finalScope(e))
+		});
+		tableElements.forEach((cell) => {
+			cell.addEventListener("mousedown", (e) => props.setStart(e))
+			cell.addEventListener("mouseup", (e) => props.finalScope(e))
+			cell.addEventListener("input", (e) => props.onChangeCell(e))
+			cell.addEventListener("mouseover", (e) => props.setEnd(e))
+		});
 		for(let i = 0; i<props.height;i++){
                         props.tableRef.current[i] = [];
                         for(let j = 0; j<props.width;j++){
