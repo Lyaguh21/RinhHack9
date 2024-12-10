@@ -106,7 +106,9 @@ function Main(props) {
 			cell.addEventListener("mouseup", (e) => props.finalScope(e))
 			cell.addEventListener("input", (e) => props.onChangeCell(e))
 			cell.addEventListener("mouseover", (e) => props.setEnd(e))
+			cell.addEventListener('keydown', (e) => props.nextCell(e))
 		});
+		document.body.addEventListener('keydown', (e) => props.hotKeys(e));
 		for(let i = 0; i<props.height;i++){
                         props.tableRef.current[i] = [];
                         for(let j = 0; j<props.width;j++){

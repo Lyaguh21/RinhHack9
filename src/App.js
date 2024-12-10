@@ -7,8 +7,6 @@ function App() {
 	const al = ['А', 'Б', 'В', 'Г', 'Д', 'Е', 'Ж', 'З', 'И', 'К', 'Л', 'М', 'Н', 'О', 'П', 'Р', 'С', 'Т', 'У', 'Ф', 'Х', 'Ц', 'Ч', 'Ш', 'Щ', 'Ы', 'Э', 'Ю', 'Я'];
 	let width = 50;
 	let height = 50;
-	console.log(indexConvert('АА10'));
-	console.log(indexConvert('АР10'));
 
 	function numToLet(num){
                 let letter ='';
@@ -31,6 +29,9 @@ function App() {
         }
 
 	function rangeToArray(focus){
+		if(focusRef.current[0] === focusRef.current[1] && focusRef.current[0] !== ''){
+			return([tableRef.current[indexConvert(focusRef.current[0])[1] - 1][indexConvert(focusRef.current[0])[0] - 1]]);
+		}
 		if(focusRef.current[1] === ''){
 			focusRef.current[1] = focusRef.current[0];
 		}
@@ -61,24 +62,87 @@ function App() {
 
                         return(normIndex);
                 }
-                normIndex[0] = (parseInt(al.indexOf(tableIndex[0])) +1).toString();
+                normIndex[0] = (al.indexOf(tableIndex[0]) +1).toString();
                 normIndex[1] = (parseInt(tableIndex.slice(1))).toString();
                 return(normIndex);
 	}
 	
 
 	const mouseDownRef = useRef(false);
-	const focusRef = useRef(['','']);
+	const focusRef = useRef([]);
 	const tableRef = useRef([]);
 
 
+	const onMonitorChange = (e) => {
+		resetSelection();
+		const value = e.target.value.toString();
+		if(value.includes(':')){
+			const center = value.indexOf(':');	
+			const firstIndex = value.slice(0, center);
+			const secondIndex = value.slice(center + 1);
+			if(!secondIndex){
+				setSelection();
+			} else {
+			let firstIndexMap = Array.from(firstIndex).map((item) => parseInt(item, 10).toString()).filter((item) => (isNaN(item) === false)).join('');
+			let secondIndexMap = Array.from(secondIndex).map((item) => parseInt(item, 10).toString()).filter((item) => (isNaN(item) === false)).join('');; 
+			if(firstIndexMap === firstIndex){
+				focusRef.current[0] = `${'А' + firstIndex}`;
+			} else if(!firstIndexMap){
+				focusRef.current[0] = `${firstIndex + '1'}`;
+			} else {
+				focusRef.current[0] = firstIndex;
+			}
+			if(secondIndexMap === secondIndex){
+				focusRef.current[1] = `${'А' + secondIndex}`;
+			} else if(!secondIndexMap){
+				focusRef.current[1] = `${secondIndex + height.toString()}`;
+			} else {
+				focusRef.current[1] = secondIndex;
+			}
+			}
+		} else {
+			const index = value.toString();
+			let indexMap = Array.from(index).map((item) => parseInt(item, 10).toString()).filter((item) => (isNaN(item) === false)).join('');
+			if(indexMap === index){
+				focusRef.current[0] = `${'А' + index}`;
+				focusRef.current[1] = `${numToLet(width) + index}`; 
+			} else if(!indexMap){
+				focusRef.current[0] = `${index + '1'}`;
+				focusRef.current[1] = `${index + height}`;
+			} else {
+				focusRef.current[0] = index;
+				focusRef.current[1] = index;
+			}
+		}
+		
+		setSelection();
+	}
+
+
+
 	const resetSelection = () => {
+		try{
 		rangeToArray(focusRef.current).forEach((target) => {target.className = 'cell'});
+		} catch {
+			console.log('suka blyat');
+		}
 	}
+
+
+
 	const setSelection = () => {
+		try{
 		rangeToArray(focusRef.current).forEach((target) => {target.className = 'cell selected'});
+		} catch {
+		}
 	}
+
+
+
 	const setStartOfScope = (e) => {
+		if(e.button === 2){
+			e.preventDefault();
+		}
 		if(e.target.className === 'cell' || e.target.className === 'cell selected'){
 			resetSelection();
 			const ident = document.getElementById("cell-name");
@@ -104,6 +168,10 @@ function App() {
 			}
 		}
 	}
+
+
+
+
 	const  setEndOfScope = (e) => {
 		if(mouseDownRef.current === true){
 			resetSelection();
@@ -119,11 +187,71 @@ function App() {
 			setSelection();
 		}
 	}
-	const setFinalEndOfScope = () => {
+
+
+
+	const setFinalEndOfScope = (e) => {
 		mouseDownRef.current = false;
+		const monitor = document.getElementById('cell-value');
+		
+		if(e.button === 2){
+			monitor.focus();
+		}else {
+			monitor.value = e.target.value;
+		}
 	}
 
 
+	const nextCell = (e) => {
+		if(e.key === 'Enter' || (e.key === 'ArrowLeft' && e.ctrlKey) || (e.key === 'ArrowDown' && e.ctrlKey) || (e.key === 'ArrowRight' && e.ctrlKey) || (e.key === 'ArrowUp' && e.ctrlKey)){
+			let prevId = [];
+			let nextId = [];
+			tableRef.current.forEach((row) => {
+				if(row.includes(e.target)){
+					prevId = [tableRef.current.indexOf(row), row.indexOf(e.target)];
+				}
+			});
+			if(e.key === 'Enter'){
+				nextId = [prevId[0]+1, prevId[1]];
+				resetSelection();
+			}
+			if(!e.shiftKey){	
+				if(e.key === 'ArrowLeft'){
+					nextId = [prevId[0], prevId[1] -1];
+					resetSelection();
+				}
+				if(e.key === 'ArrowRight'){
+					nextId = [prevId[0], prevId[1] +1];
+					resetSelection();
+				}
+				if(e.key === 'ArrowUp'){
+					nextId = [prevId[0]-1, prevId[1]];
+					resetSelection();
+				}
+				if(e.key === 'ArrowDown'){
+					nextId = [prevId[0] +1, prevId[1]];
+					resetSelection();
+				}
+				if(nextId[0] === -1){
+					nextId[0] = 0;
+				}
+				if(nextId[1] === -1){
+					nextId[1] = 0;
+				}
+				if(nextId[0] === width){
+					nextId[0] = width - 1;
+				}
+				if(nextId[1] === height){
+					nextId[1] = height - 1;
+				}
+			}
+				tableRef.current[nextId[0]][nextId[1]].focus();
+				focusRef.current[0] = tableRef.current[nextId[0]][nextId[1]].id;
+				focusRef.current[1] = focusRef.current[0];
+				setSelection();
+			
+		}
+	}
 
 	// обновление ячейки
 
@@ -132,6 +260,9 @@ function App() {
 		cellmonitor.value= e.target.value;
 		monitorChange(e);
 	}
+
+
+
 	const monitorChange = (e) => {
 		if(focusRef.current[1] === ''){
 		const cellId = document.getElementById('cell-name').value;
@@ -146,6 +277,8 @@ function App() {
 	// жирни шрифт
 
 	const setBold = () => {
+		if(focusRef.current.length === 0){
+		} else {
 		if(focusRef.current[1] === ''){
 		const focus = document.getElementById('cell-name');
 		const cell = document.getElementById(focus.value);
@@ -162,6 +295,7 @@ function App() {
 				targets.forEach((target) => {target.style.fontWeight = 'bold'});
 			}
 		}
+		}
 
 	}
 
@@ -171,6 +305,7 @@ function App() {
 	// кривой шрифт
 
 	const setItalic = () => {
+		if(focusRef.current.length === 0){} else{
 		if(focusRef.current[1] === ''){
 		const focus = document.getElementById('cell-name');
 		const cell = document.getElementById(focus.value);
@@ -187,6 +322,7 @@ function App() {
 				targets.forEach((target) => {target.style.fontStyle = 'italic';});
 			}
 		}
+		}
 	}
 
 
@@ -196,6 +332,7 @@ function App() {
 	//шрифт на полу
 
 	const setUnderlined = () => {
+		if(focusRef.current.length === 0){} else{
 		if(focusRef.current[1] === ''){
 		const focus = document.getElementById('cell-name');
 		const cell = document.getElementById(focus.value);
@@ -211,9 +348,26 @@ function App() {
 			} else {
 				targets.forEach((target) => {target.style.textDecoration = 'underline';});
 			}
-
 		}
+		}
+	}
 
+
+
+	const hotKeys = (e) => {
+		if(e.key === 'b' && e.ctrlKey){
+			e.preventDefault();
+			setBold();
+		}
+		if(e.key === 'i' && e.ctrlKey){
+			e.preventDefault();
+			setItalic();
+		}
+		if(e.key === 'u' && e.ctrlKey){
+			e.preventDefault();
+			setUnderlined();
+		}
+		
 	}
 
 
@@ -223,8 +377,8 @@ function App() {
 
 	return(
 		<>
-			<Header setBold={setBold} setItalic={setItalic} setUnderlined={setUnderlined} monitorChange={monitorChange}/>
-			<Main tableRef={tableRef} finalScope={setFinalEndOfScope} setEnd={setEndOfScope} setStart={setStartOfScope} height={height} width={width} onChangeCell={cellChange}/>
+			<Header monitorChange2={onMonitorChange} setBold={setBold} setItalic={setItalic} setUnderlined={setUnderlined} monitorChange={monitorChange}/>
+			<Main hotKeys={hotKeys} nextCell={nextCell} tableRef={tableRef} finalScope={setFinalEndOfScope} setEnd={setEndOfScope} setStart={setStartOfScope} height={height} width={width} onChangeCell={cellChange}/>
 		</>
 	)
 }

@@ -6,6 +6,13 @@ import bold from "./bold.svg";
 import cursiv from "./cursiv.svg";
 import underline from "./underline.svg";
 function Header(props) {
+	 
+	const enter = (e) => {
+		if(e.key === 'Enter'){
+			const monitor = document.getElementById('cell-value');
+			monitor.focus();
+		}
+	}
 	return(
 		<header>
 			<img id="logo" src={logo2} alt="logo_image"/>
@@ -32,7 +39,7 @@ function Header(props) {
 		<div id="func"><img src={func} alt="func"></img></div>
 		</div>
 		<div className="bottom-panel">
-			<input type="text" placeholder="номер ячейки" id="cell-name"></input>
+			<input type="text" placeholder="номер ячейки" id="cell-name" onKeyPress={enter} onChange={props.monitorChange2}></input>
 			<input type="text" placeholder="значение ячейки" id="cell-value" onChange={props.monitorChange}></input>
 		</div>
 		</header>
