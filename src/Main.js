@@ -63,8 +63,17 @@ function Main(props) {
 	let NumberCell = "<div class='number-cell'></div>";
 
 
+	let fonts = require('./data/fonts.json');
+
 	// поиск ячеек
 	window.onload = function(){
+		document.getElementById('font').addEventListener('click', props.fontDropDown);
+		const  fontDropDown = document.getElementById('font-dropdown');
+		fontDropDown.addEventListener('mouseleave', props.fontClose);
+		fonts.fonts.forEach((font) => {
+			console.log(font);
+			fontDropDown.insertAdjacentHTML('afterbegin', `<div class='font' style="font-family: ${font.css}">${font.name}</div>`);
+		});
 		document.addEventListener('contextmenu', e => e.preventDefault())
 		let alo = document.getElementById("table");
 		alo.insertAdjacentHTML('afterbegin', HeadRow);
@@ -89,6 +98,8 @@ function Main(props) {
 		for(let i = 0; i< props.height; i++){
 			numbers.item(i).innerHTML=i+1;
 		}		
+		const fontChanger = document.querySelectorAll('.font');
+		fontChanger.forEach((item) => {item.addEventListener('click', (e) => props.fontChange(e))});
 		Head.forEach((target) => {
 			if(target.innerHTML){
 				target.addEventListener("mousedown", (e) => props.setStart(e));

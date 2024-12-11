@@ -1,10 +1,10 @@
-import undo from "./arrow_left.png";
-import logo2 from "./logo2.png";
-import paste from "./paste.png";
-import func from "./func.png";
-import bold from "./bold.svg";
-import cursiv from "./cursiv.svg";
-import underline from "./underline.svg";
+import undo from "./images/arrow_left.png";
+import logo2 from "./images/logo2.png";
+import paste from "./images/paste.png";
+import func from "./images/func.png";
+import bold from "./images/bold.svg";
+import cursiv from "./images/cursiv.svg";
+import underline from "./images/underline.svg";
 function Header(props) {
 	 
 	const enter = (e) => {
@@ -18,7 +18,6 @@ function Header(props) {
 			<img id="logo" src={logo2} alt="logo_image"/>
 			<div className="flex-box">
 				<div className="button">Файл</div>
-				<div className="button" id="vid">Вид</div>
 				<div className="button">Формулы</div>
 				<div className="button">Справка</div>
 			</div>
@@ -28,7 +27,8 @@ function Header(props) {
 		<div id="undo"><img src={undo} alt="arrow"></img></div>
 		<div id="paste"><img src={paste} alt="paste"></img></div>
 		<div id="font-bar">
-			<div id="font"></div>
+			<div id="font">
+			</div>
 			<div id="font-size"></div>
 		</div>
 		<div id="font-styles">
@@ -42,6 +42,7 @@ function Header(props) {
 			<input type="text" placeholder="номер ячейки" id="cell-name" onKeyPress={enter} onChange={props.monitorChange2}></input>
 			<input type="text" placeholder="значение ячейки" id="cell-value" onChange={props.monitorChange}></input>
 		</div>
+		<div id="font-dropdown"></div>
 		</header>
 	);
 }

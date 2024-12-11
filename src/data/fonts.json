@@ -1,0 +1,36 @@
+{
+	"fonts": [
+		{
+			"name": "Arial",
+			"css": "'Arial', sans-serif"
+		},
+		{
+			"name": "Tahoma",
+			"css": "'Tahoma', sans-serif"
+		},
+		{
+			"name": "Trebuchet MS",
+			"css": "'Trebuchet MS', sans-serif"
+		},
+		{
+			"name": "Times New Roman",
+			"css": "'Times New Roman', serif"
+		},
+		{
+			"name": "Georgia",
+			"css": "'Georgia', serif"
+		},
+		{
+			"name": "Garamond",
+			"css": "'Garamond', serif"
+		},
+		{
+			"name": "Courier New",
+			"css": "'Courier New', monospace"
+		},
+		{
+			"name": "Brush Script MT",
+			"css": "'Brush Script MT', cursive"
+		}
+	]
+}

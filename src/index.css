@@ -6,82 +6,98 @@
 --table-width: 51;
 --table-height: 50;
 }
+
 body{
 margin: 0px;
 font-family: "Open Sans", sans-serif;
 background: var(--color-secondary);
-
 }
+
 header{
 background-color:var(--color-primary);
-height: 5vh;
+height: 54px;
 width: 100vw;
+min-width: 610px;
 position: absolute;
 top: 0;
 color: white;
 font-size: 1.5em;
 font-weight: 600;
+z-index: -10;
 }
-#vid{
-width:4vw;
-transform: translateX(-1vw);
-}
+
 .button{
-height: 5vh;
-width: 7vw;
+height: 54px;
+padding-left: 15px;
+padding-right: 15px;
 vertical-align: middle;
 text-align: center;
 align-items: center;
-line-height: 5vh;
+line-height: 44px;
 }
+
 .flex-box{
 display: flex;
-top: 0px;
-width:30vw;
-left:1vw;
+top: 0;
+width: 486px;
+left: 60px;
 position:absolute;
 justify-content: start; 
 }
+
 .toolPanel{
 	position: absolute;
 	display: grid;
-	grid-template-columns: repeat(50, 1fr);
-	grid-template-rows: 1.5vh;
+	grid-template-columns: repeat(4, 35px) 252px repeat(6, 35px) 1fr;
+	grid-template-rows: 1fr;
 	width: 99vw;
-	height: 4vh; 
-	top:6vh;
+	min-width: 603.9px;
+	height: 32px; 
+	top: 63px;
 	left: 0.5vw;
 	border-radius: 15px / 50%;
 	background-color: white;
 	vertical-align: middle;
-
+	z-index: -5;
 }
+
 .bottom-panel{
 	display: grid;
 	grid-template-rows: 1fr;
-	grid-template-columns: repeat(16, 1fr);
+	grid-template-columns: 200px 5vw 1fr ;
 	width: 99vw;
-	height: 4vh;
+	min-width: 603.9px;
+	height: 32px;
 	position: absolute;
-	top:12vh;
+	top:105px;
 	left: 0.5vw;
+	z-index: -5;
 }
+
 #cell-name, #cell-value{
 	background-color: white;
+	border: 1px solid grey;
 	border-radius: 10px / 15%;
 	font-size: 1.1em;
-}
-#cell-value::placeholder{
-	margin-left: 1vw;
 	position: relative;
+	z-index: -3;
 }
+
+#cell-value::placeholder{
+	transform: translateX(10px);
+	position: relative;
+	color: grey;
+}
+
 #cell-value{
-	grid-column: 3/17;
+	grid-column: 3;
 }
+
 #cell-name{
-	grid-column: 1/2;
 	text-align: center;
+	grid-column: 1;
 }
+
 .footer{
 	background-color: var(--color-primary);
 	font-size: 1.3em;
@@ -94,6 +110,7 @@ justify-content: start;
 	display: flex;
 	justify-content: end;
 }
+
 .footer-div{
 	width: 12vw;
 	height: 10vh;
@@ -101,42 +118,55 @@ justify-content: start;
 	align-items: center;
 	vertical-align: middle;
 }
+
 #table{
+	bottom: 0;
 	width: 100vw;
-	height: 80vh;
+	min-width: 610px;
+	height: calc(100vh - 155px);
 	overflow: scroll;
-	bottom:0;
 	position: absolute;
 	background-color: var(--color-secondary);
 	display: grid;
-	grid-template-rows: 6vh repeat(var(--table-height), 3vh);
-	grid-template-columns: repeat(var(--table-width), 6vw);
+	grid-template-rows: 58px repeat(var(--table-height), 30px);
+	grid-template-columns: repeat(var(--table-width), 115px);
+	z-index: -100;
 }
+
 #table-head{
 	display: grid;
 	grid-template-rows: 1fr;
-	grid-template-columns: repeat(var(--table-width), 5vw);
+	grid-template-columns: repeat(var(--table-width), 115px);
 	background-color: var(--color-secondary);
-	height: 4vh;
+	height: 58px;
 	width: 100vw;
 	overflow: scroll;
 	position: absolute;
-	top: 17vh;
 }
+
 .column-head{
 	border: 1px solid var(--color-accent);
-	height: 6vh;
-	border-top: 0px;
+	height: 58px;
+	border-top: 0;
 	text-align: center;
+	vertical-align: middle;
+	align-items: center;
+	line-height: 60px;
 	font-size: 2em;
 	font-weight: 500;
 }
+
 .number-cell{
 	border: 1px solid var(--color-accent);
-	height: 3vh;
+	height: 29px;
+	padding-right: 4px;
 	text-align: end;
-	font-weight: 700;
+	vertical-align: middle;
+	line-height: 29px;
+	font-weight: 600;
+	font-size: 1.1em;
 }
+
 .cell{
 	position: relative;
 	user-select: none;
@@ -144,9 +174,9 @@ justify-content: start;
 	-o-user-select: none;
 	-khtml-user-select: none;
 	-webkit-user-select: none;
-	height: 3vh;
+	height: 30px;
 	border: 1px solid var(--color-accent);
-	line-height: 3vh;
+	line-height: 30px;
 	vertical-align: top;
 	text-align: center;
 	font-size: 1.5em;
@@ -154,83 +184,144 @@ justify-content: start;
 	cursor: pointer; 
 	transition: 1s;
 }
+
 .selected{
 	background-color: var(--color-selected); 
 }
+
 .toolPanel div{
 	height: 100%;
 }
+
 #redo{
 	grid-column: 1;
 }
+
 #undo{
 	grid-column: 2;
 }
+
 #paste{
 	grid-column: 3;
 }
+
 #font-bar{
-	grid-column: 4/8;
-	width: 8.5vw;
-	height: 2.5vh;
+	grid-column: 5;
+	width: 250px;
+	height: 21px;
 	border: 1px solid var(--color-accent);
-	transform: translate(5%, 20%);
+	transform: translateY(20%);
 }
+
 #font-styles{
-	grid-column: 9/12;
+	grid-column: 7/10;
 }
+
 #func{
-	grid-column: 12;
+	grid-column: 11;
+	display: flex;
+	align-items: center;
+	justify-content: center;
 }
+
 #font-styles{
 	display: flex;
 	justify-content: space-around;
 	flex-direction: row;
-	transform: translate(-10%, 20%);
 }
-#redo img{
-	transform: translate(40%, 40%);
-	position:absolute;
-	height: 2vh;
+
+#font-styles div{
+	height: 100%;
+	display: flex;
+	align-items: center;
 }
+
+#redo, #undo, #paste {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
 #undo img{
-	position: absolute;
-	transform: translate(0, 40%) rotateY(180deg);
-	height: 2vh;
+	transform: rotateY(180deg);
 }
+
 #paste img{
-	position: absolute;
-	transform: translate(0, 45%);
-	height: 2vh;
+	height: 17px;
 }
+
 #logo{
 	position: absolute;
-	height: 2.7vh;
-	top: 1vh;
-	left: 1vh;
+	height: 35px;
+	top: 10px;
+	left: 10px;
 }
+
 #font-styles img{
-	height: 2vh;
+	height: 17px;
 }
+
 #func img{
-	height: 2vh;
-	transform: translate(0, 15%);
+	height: 17px;
 }
+
 #name{
 	position: absolute;
 	left:50%;
 	transform: translateX(-50%);
-	font-size: 1.2em;
+	font-size: 1.5em;
 }
+
 #redo::after{
 	content: "";
 	position: absolute;
-	width: 2px;
-	height: 2.2vh;
-	left:3.4vh;
-	top:0.8vh;
-	background-color: black;
+	width: 1.5px;
+	height: 24px;
+	left: 34px;
+	top: 4px;
+	background-color: var(--color-accent);
+}
+
+#font-dropdown{
+	position: absolute;
+	width: 220px;
+	height: 15vh;
+	background-color: white;
+	border: 1px solid black;
+	display: none;
+	flex-direction: column;
+	justify-content: start;
+	overflow-y: scroll;
+	overflow-x: hidden;
+	color: black;
+	z-index: 1;
+	left: 144px;
+	top: 62px;
+
+}
+
+#font{
+	border-right: 1px solid var(--color-accent);
+	height: 21px;
+	width: 220px;
+}
+
+.font{
+	position: relative;
+	height: 22px;
+	line-height: 22px;
+	vertical-align: middle;
+	text-align: start;
+	align-items: center;
+	width: 100%;
+	font-size: 0.8em;
+	white-space: nowrap;
+	border-bottom: 2px solid black;
+}
+
+
+@media all and (max-width: 1100px) {
+	#name{
+		left: 540px;
 	}
-
-
-
+}

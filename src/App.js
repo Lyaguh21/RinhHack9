@@ -73,6 +73,17 @@ function App() {
 	const tableRef = useRef([]);
 
 
+	const fontChange = (e) => {
+		rangeToArray(focusRef.current).forEach((target) => {target.style.fontFamily = e.target.style.fontFamily});
+	}
+	const fontDropDown = () => {
+		const font = document.getElementById('font-dropdown');
+		font.style.display = 'flex';
+	}
+	const fontClose = () => {
+		const font = document.getElementById('font-dropdown');
+		font.style.display = 'none';
+	}
 	const onMonitorChange = (e) => {
 		resetSelection();
 		const value = e.target.value.toString();
@@ -93,7 +104,7 @@ function App() {
 				focusRef.current[0] = firstIndex;
 			}
 			if(secondIndexMap === secondIndex){
-				focusRef.current[1] = `${'А' + secondIndex}`;
+				focusRef.current[1] = `${numToLet(width) + secondIndex}`;
 			} else if(!secondIndexMap){
 				focusRef.current[1] = `${secondIndex + height.toString()}`;
 			} else {
@@ -355,15 +366,15 @@ function App() {
 
 
 	const hotKeys = (e) => {
-		if(e.key === 'b' && e.ctrlKey){
+		if((e.key === 'b' || e.key === 'и') && e.ctrlKey){
 			e.preventDefault();
 			setBold();
 		}
-		if(e.key === 'i' && e.ctrlKey){
+		if((e.key === 'i' || e.key === 'ш') && e.ctrlKey){
 			e.preventDefault();
 			setItalic();
 		}
-		if(e.key === 'u' && e.ctrlKey){
+		if((e.key === 'u' || e.key === 'г') && e.ctrlKey){
 			e.preventDefault();
 			setUnderlined();
 		}
@@ -378,7 +389,7 @@ function App() {
 	return(
 		<>
 			<Header monitorChange2={onMonitorChange} setBold={setBold} setItalic={setItalic} setUnderlined={setUnderlined} monitorChange={monitorChange}/>
-			<Main hotKeys={hotKeys} nextCell={nextCell} tableRef={tableRef} finalScope={setFinalEndOfScope} setEnd={setEndOfScope} setStart={setStartOfScope} height={height} width={width} onChangeCell={cellChange}/>
+			<Main fontChange={fontChange} fontDropDown={fontDropDown} fontClose={fontClose} hotKeys={hotKeys} nextCell={nextCell} tableRef={tableRef} finalScope={setFinalEndOfScope} setEnd={setEndOfScope} setStart={setStartOfScope} height={height} width={width} onChangeCell={cellChange}/>
 		</>
 	)
 }
