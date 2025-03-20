@@ -1,12 +1,10 @@
-import React, {useState, useRef} from 'react'
+import React, {useRef, useState} from 'react'
 import Main from './Main.js'
 import Header from './Header.js'
 // import Footer from './Footer.js'
 
 function App() {
 	const al = ['А', 'Б', 'В', 'Г', 'Д', 'Е', 'Ж', 'З', 'И', 'К', 'Л', 'М', 'Н', 'О', 'П', 'Р', 'С', 'Т', 'У', 'Ф', 'Х', 'Ц', 'Ч', 'Ш', 'Щ', 'Ы', 'Э', 'Ю', 'Я'];
-	let width = 50;
-	let height = 50;
 
 	function numToLet(num){
                 let letter ='';
@@ -18,10 +16,14 @@ function App() {
                         let thirdIndex = num;
                         letter = al[firstIndex - 1] + al[secondIndex - 1] + al[thirdIndex - 1];
                 } else if(num> al.length){
-                        let firstIndex = (~~(num / al.length)); 
+			if ( num % al.length === 0) {
+				letter = al[(~~((num - 1) / al.length)) - 1] + 'Я';
+			} else {
+                        let firstIndex = (~~((num - 1) / al.length)); 
                         num -= firstIndex * al.length;
                         let secondIndex = num;
                         letter = al[firstIndex - 1] + al[secondIndex - 1];
+			}
                 } else {
                         letter = al[num - 1]
                 }
@@ -49,6 +51,7 @@ function App() {
 		}
 		return(array);
 	}
+
 	function indexConvert(tableIndex){
                 let normIndex = ['0', '0'];
                 if(al.includes(tableIndex[1])){
@@ -66,24 +69,64 @@ function App() {
                 normIndex[1] = (parseInt(tableIndex.slice(1))).toString();
                 return(normIndex);
 	}
-	
+	function indexTabler(normIndex){
+                let tableIndex = "";
+                if(normIndex[0] > al.length * al.length){
+                        tableIndex= (~~(al[parseInt(normIndex[0]) / (al.length * al.length) - 1])).toString() + (~~(al[parseInt(normIndex[0]) % (al.length * al.length) / al.length - 1])).toString() + (al[parseInt(normIndex[0]) % (al.length * al.length) % al.length - 1]).toString() + normIndex[1];
+                        return(tableIndex);
+                }
+                if(normIndex[0] > al.length){
+                        tableIndex = al[(~~(parseInt(normIndex[0]) / al.length)) - 1] + (al[parseInt(normIndex[0]) % al.length - 1]).toString() + normIndex[1];
+                        return(tableIndex);
+                }
+                tableIndex = al[parseInt(normIndex[0]) - 1] + normIndex[1];
+                return(tableIndex);
+        }	
 
 	const mouseDownRef = useRef(false);
 	const focusRef = useRef([]);
 	const tableRef = useRef([]);
+	const [width, setWidth] = useState(50);
+	const [height, setHeight] = useState(50);
+
+
+	const setTableRef = () => {
+		let elements = document.querySelectorAll('.cell');
+
+		for ( let i = 0 ; i <= height; i++) {
+			tableRef.current[i] =[];
+			for ( let j = 0 ; j <= width ; j++ ) {
+				tableRef.current[i][j] = elements.item(i*width + j);
+			}
+		}
+	}
+
+	const setSize = () => {
+		let nextWidth = Number(document.getElementById('width').value);
+		let nextHeight = Number(document.getElementById('height').value);
+		if(nextWidth > 0 && nextHeight > 0 && parseInt(nextWidth) !== 'Nan' && parseInt(nextHeight) !== 'Nan'){
+		setWidth(nextWidth);
+		setHeight(nextHeight);
+		}
+	}
 
 
 	const fontChange = (e) => {
+		try{
 		rangeToArray(focusRef.current).forEach((target) => {target.style.fontFamily = e.target.style.fontFamily});
+		} catch {}
 	}
+
 	const fontDropDown = () => {
 		const font = document.getElementById('font-dropdown');
 		font.style.display = 'flex';
 	}
+
 	const fontClose = () => {
 		const font = document.getElementById('font-dropdown');
 		font.style.display = 'none';
 	}
+
 	const onMonitorChange = (e) => {
 		resetSelection();
 		const value = e.target.value.toString();
@@ -135,7 +178,6 @@ function App() {
 		try{
 		rangeToArray(focusRef.current).forEach((target) => {target.className = 'cell'});
 		} catch {
-			console.log('suka blyat');
 		}
 	}
 
@@ -167,7 +209,7 @@ function App() {
 			resetSelection();
 			const ident = document.getElementById("cell-name");
 			if (e.target.className === 'number-cell'){
-				focusRef.current = ['А' + `${e.target.innerHTML}`, `${numToLet(width) + e.target.innerHTML}`];
+				focusRef.current = [`А${e.target.innerHTML}`, `${numToLet(width) + e.target.innerHTML}`];
 			} else {
 			focusRef.current = [`${e.target.id + '1'}`, `${e.target.id + height}`];
 			}
@@ -175,7 +217,6 @@ function App() {
 			setSelection();
 			if(e.button === 2){
 				mouseDownRef.current = true;
-			
 			}
 		}
 	}
@@ -204,8 +245,7 @@ function App() {
 	const setFinalEndOfScope = (e) => {
 		mouseDownRef.current = false;
 		const monitor = document.getElementById('cell-value');
-		
-		if(e.button === 2){
+		if(focusRef.current[0] !== focusRef.current[1]){
 			monitor.focus();
 		}else {
 			monitor.value = e.target.value;
@@ -214,6 +254,7 @@ function App() {
 
 
 	const nextCell = (e) => {
+		try{
 		if(e.key === 'Enter' || (e.key === 'ArrowLeft' && e.ctrlKey) || (e.key === 'ArrowDown' && e.ctrlKey) || (e.key === 'ArrowRight' && e.ctrlKey) || (e.key === 'ArrowUp' && e.ctrlKey)){
 			let prevId = [];
 			let nextId = [];
@@ -260,9 +301,22 @@ function App() {
 				focusRef.current[0] = tableRef.current[nextId[0]][nextId[1]].id;
 				focusRef.current[1] = focusRef.current[0];
 				setSelection();
-			
+		}
+		} catch {}
+	}
+
+	const toWidth = (e) =>{
+		if(e.key === 'Enter'){
+			document.getElementById('width').focus();
 		}
 	}
+
+	const setSizeFromWidth = (e) => {
+		if(e.key === "Enter"){
+			setSize();
+		}
+	}
+
 
 	// обновление ячейки
 
@@ -275,6 +329,7 @@ function App() {
 
 
 	const monitorChange = (e) => {
+		try{
 		if(focusRef.current[1] === ''){
 		const cellId = document.getElementById('cell-name').value;
 		const cell = document.getElementById(cellId);
@@ -283,6 +338,7 @@ function App() {
 			const targets = rangeToArray(focusRef.current);
 			targets.forEach((target) => {target.value = e.target.value;});
 		}
+		} catch {}
 	}
 
 	// жирни шрифт
@@ -378,6 +434,10 @@ function App() {
 			e.preventDefault();
 			setUnderlined();
 		}
+		if((e.key === 'h' || e.key === 'р') && e.ctrlKey){
+			e.preventDefault();
+			document.getElementById('height').focus();
+		}
 		
 	}
 
@@ -388,8 +448,8 @@ function App() {
 
 	return(
 		<>
-			<Header monitorChange2={onMonitorChange} setBold={setBold} setItalic={setItalic} setUnderlined={setUnderlined} monitorChange={monitorChange}/>
-			<Main fontChange={fontChange} fontDropDown={fontDropDown} fontClose={fontClose} hotKeys={hotKeys} nextCell={nextCell} tableRef={tableRef} finalScope={setFinalEndOfScope} setEnd={setEndOfScope} setStart={setStartOfScope} height={height} width={width} onChangeCell={cellChange}/>
+			<Header setSizeFromWidth={setSizeFromWidth} setSize={setSize} toWidth={toWidth} monitorChange2={onMonitorChange} setBold={setBold} setItalic={setItalic} setUnderlined={setUnderlined} monitorChange={monitorChange}/>
+			<Main setTableRef={setTableRef} numToLet={numToLet} fontChange={fontChange} fontDropDown={fontDropDown} fontClose={fontClose} hotKeys={hotKeys} nextCell={nextCell} tableRef={tableRef} finalScope={setFinalEndOfScope} setEnd={setEndOfScope} setStart={setStartOfScope} height={height} width={width} onChangeCell={cellChange}/>
 		</>
 	)
 }

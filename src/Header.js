@@ -37,6 +37,9 @@ function Header(props) {
 			<div id="underline" onClick={props.setUnderlined}><img src={underline} alt="underline"></img></div>
 		</div>
 		<div id="func"><img src={func} alt="func"></img></div>
+		<input type="number" min='1' placeholder="Высота" id="height" onKeyDown={props.toWidth}></input>
+		<input type="number" min='1' placeholder="Ширина" id="width" onKeyDown={props.setSizeFromWidth}></input>
+		<button id="sizeSetter" onClick={props.setSize}>задать</button>
 		</div>
 		<div className="bottom-panel">
 			<input type="text" placeholder="номер ячейки" id="cell-name" onKeyPress={enter} onChange={props.monitorChange2}></input>
